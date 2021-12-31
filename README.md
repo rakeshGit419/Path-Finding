@@ -16,5 +16,3 @@ A* works similarly to dijkstra by creating a priority queue of nodes and then ad
 
 ![astar](https://user-images.githubusercontent.com/36581610/50039438-af25c980-0000-11e9-9fda-f96a2ee6cb2e.gif)
 
-## Draw a maze
-![drawmaze](https://user-images.githubusercontent.com/36581610/51815322-197f8a00-228e-11e9-80c9-b088d76b3ba2.gif)
