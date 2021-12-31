@@ -25,43 +25,51 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.JComboBox;
-
+// ------------------------------------------Imported Library Files------------------------------------------------------------
+// main class of path finding visualizer
 public class PathFinding {
 	
 	//FRAME
 	JFrame frame;
 	//GENERAL VARIABLES
-	private int cells = 20;
-	private int delay = 30;
+	private int cells = 20;        // represents cell value
+	private int delay = 30;       // represents delay value
 	private double dense = .5;
 	private double density = (cells*cells)*.5;
-	private int startx = -1;
-	private int starty = -1;
-	private int finishx = -1;
-	private int finishy = -1;
+	
+	private int startx  =  -1;        // indicates x axis of start/source point
+	private int starty  =  -1;       // indicates y axis of start/source point
+	private int finishx =  -1;     // indicates x axis of finish/destination point
+	private int finishy =  -1;    // indicates y axis of finish/destination point
+	
 	private int tool = 0;
 	private int checks = 0;
 	private int length = 0;
-	private int curAlg = 0;
+	private int curAlg = 0;             // current algorithm using 
 	private int WIDTH = 850;           // window width
-	private final int HEIGHT = 650;    // window height
-	private final int MSIZE = 600;    // maze size
-	private int CSIZE = MSIZE/cells;  // cell size
+	private final int HEIGHT = 650;   // window height
+	private final int MSIZE = 600;   // maze size
+	private int CSIZE = MSIZE/cells;// cell size
+	
 	//UTIL ARRAYS
-	private String[] algorithms = {"Dijkstra","A*"};
-	private String[] tools = {"Start","Finish","Wall", "Eraser"};
+	private String[] algorithms = {"Dijkstra","A*"};       // types of algorithms that we can find the optimized path from source to destination point
+	private String[] tools = {"Start","Finish","Wall", "Eraser"};  // operations possible to manipulate the application
+	
 	//BOOLEANS
-	private boolean solving = false;
+	private boolean solving = false;              // assures whether we can apply the algos or not for a specific points at a specific locations
+	
 	//UTIL
 	Node[][] map;
 	Algorithm Alg = new Algorithm();
 	Random r = new Random();
+	
 	//SLIDERS
-	JSlider size = new JSlider(1,5,2);          // size slider
-	JSlider speed = new JSlider(0,500,delay);   // delay slider
-	JSlider obstacles = new JSlider(1,100,50);  // dens slider
+	JSlider size = new JSlider(1,5,2);            // size slider {sizes of the cells}
+	JSlider speed = new JSlider(0,500,delay);    // delay slider
+	JSlider obstacles = new JSlider(1,100,50);  // dens slider {generates the obstacles in the path}
+	
 	//LABELS
-	JLabel algL = new JLabel("Algorithms");
+	JLabel algL = new JLabel("Algorithms");     // labels at left side of the application
 	JLabel toolL = new JLabel("Toolbox");
 	JLabel sizeL = new JLabel("Size:");
 	JLabel cellsL = new JLabel(cells+"x"+cells);
@@ -69,21 +77,26 @@ public class PathFinding {
 	JLabel msL = new JLabel(delay+"ms");
 	JLabel obstacleL = new JLabel("Dens:");
 	JLabel densityL = new JLabel(obstacles.getValue()+"%");
-	JLabel checkL = new JLabel("Checks: "+checks);
-	JLabel lengthL = new JLabel("Path Length: "+length);
+	JLabel checkL = new JLabel("Checks: "+checks);    // counter to count the checks made till now
+	JLabel lengthL = new JLabel("Path Length: "+length);  // estimates the length of the path from source to destination
+	
 	//BUTTONS
 	JButton searchB = new JButton("Start Search");
 	JButton resetB = new JButton("Reset");
 	JButton genMapB = new JButton("Generate Map");
 	JButton clearMapB = new JButton("Clear Map");
 	JButton creditB = new JButton("Credit");
+	
 	//DROP DOWN
 	JComboBox algorithmsBx = new JComboBox(algorithms);  // Dijkshra and A*
 	JComboBox toolBx = new JComboBox(tools);             // Start ,Finish, Wall ,Eraser
+	
 	//PANELS
 	JPanel toolP = new JPanel();
+	
 	//CANVAS
 	Map canvas;
+	
 	//BORDER
 	Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
 
@@ -141,6 +154,7 @@ public class PathFinding {
 	}
 
 	private void initialize() {	//INITIALIZE THE GUI ELEMENTS
+		
 		frame = new JFrame();
 		frame.setVisible(true);
 		frame.setResizable(false);
@@ -372,6 +386,7 @@ public class PathFinding {
 			super.paintComponent(g);
 			for(int x = 0; x < cells; x++) {	//PAINT EACH NODE IN THE GRID
 				for(int y = 0; y < cells; y++) {
+					
 					switch(map[x][y].getType()) {
 						case 0:
 							g.setColor(Color.GREEN);
@@ -392,9 +407,11 @@ public class PathFinding {
 							g.setColor(Color.YELLOW);
 							break;
 					}
+					
 					g.fillRect(x*CSIZE,y*CSIZE,CSIZE,CSIZE);
 					g.setColor(Color.BLACK);
 					g.drawRect(x*CSIZE,y*CSIZE,CSIZE,CSIZE);
+					
 					//DEBUG STUFF
 					/*
 					if(curAlg == 1)
@@ -473,6 +490,7 @@ public class PathFinding {
 		@Override
 		public void mouseReleased(MouseEvent e) {}
 	}
+//	------------------------------------- Algorithms that we used for finding shortest path from source point to destination point---------------------------
 	
 	class Algorithm {	//ALGORITHM CLASS
 		
