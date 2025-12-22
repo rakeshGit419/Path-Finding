@@ -11,9 +11,137 @@ Dijkstra's algorithm works by first adding the starting node to a priority queue
 
 ![Dijkstra_PathFinding](https://user-images.githubusercontent.com/86554945/147820763-8bd09397-94e4-4ebc-a1ea-fd409973cfc6.png)
 
-## A*
-A* works similarly to dijkstra by creating a priority queue of nodes and then adding new nodes to the queue by exploring the top node on the queue. However in A* the nodes are placed into the queue with a heuristic of distance to the finish node. This means that the node at the top of the queue is always the node closest to the finish node.
+# Path Finding Visualizer - Dijkstra Algorithm Explanation
 
-<!-- make a new issue & drag the image into the description box and copy the link and then paste in the readme file -->
-![Astar_PathFinding](https://user-images.githubusercontent.com/86554945/147820648-7805f6b4-4759-47dd-8f3d-021f28cbe978.png)
+This document explains how the **Dijkstra algorithm** works in the Path Finding Visualizer project, with a small grid example and step-by-step illustration.
+
+---
+
+## Step 0: Tiny Grid Example
+
+We use a **3x3 grid** for simplicity:
+
+S . .
+. # .
+. . F
+
+
+
+
+Legend:  
+- `S` = Start `(0,0)`  
+- `F` = Finish `(2,2)`  
+- `#` = Wall `(1,1)`  
+- `.` = Empty  
+
+---
+
+## Step 1: Initialize
+
+- Start node: `(0,0)` → `hops = 0`  
+- Priority Queue: `[ (0,0) ]`  
+- GUI: Start node green, all others white.  
+
+---
+
+## Step 2: Explore Neighbors of Start
+
+Neighbors of `(0,0)`:
+
+1. `(0,1)` → empty → mark **cyan**, `hops = 1`, last = `(0,0)`  
+2. `(1,0)` → empty → mark **cyan**, `hops = 1`, last = `(0,0)`  
+
+**Queue Update:** remove `(0,0)`, add neighbors → `[ (0,1), (1,0) ]`  
+**GUI:** `(0,1)` and `(1,0)` turn cyan.
+
+---
+
+## Step 3: Explore Node `(0,1)`
+
+Neighbors of `(0,1)`:
+
+1. `(0,2)` → empty → mark cyan, `hops = 2`, last = `(0,1)`  
+2. `(1,1)` → wall → ignore  
+3. `(1,0)` → already visited, `hops = 1` → new hops = 2 → ignore  
+
+**Queue Update:** `[ (1,0), (0,2) ]`  
+**GUI:** `(0,2)` turns cyan.
+
+---
+
+## Step 4: Explore Node `(1,0)`
+
+Neighbors:
+
+1. `(2,0)` → empty → mark cyan, `hops = 2`, last = `(1,0)`  
+2. `(1,1)` → wall → ignore  
+3. `(0,1)` → already visited, hops = 1 → ignore  
+
+**Queue Update:** `[ (0,2), (2,0) ]`  
+**GUI:** `(2,0)` cyan.
+
+---
+
+## Step 5: Explore Node `(0,2)`
+
+Neighbors:
+
+1. `(1,2)` → empty → mark cyan, `hops = 3`, last = `(0,2)`  
+2. `(0,1)` → already visited → ignore  
+
+**Queue Update:** `[ (2,0), (1,2) ]`  
+**GUI:** `(1,2)` cyan.
+
+---
+
+## Step 6: Explore Node `(2,0)`
+
+Neighbors:
+
+1. `(2,1)` → empty → mark cyan, `hops = 3`, last = `(2,0)`  
+2. `(1,0)` → already visited → ignore  
+
+**Queue Update:** `[ (1,2), (2,1) ]`  
+**GUI:** `(2,1)` cyan.
+
+---
+
+## Step 7: Explore Node `(1,2)` (Finish Reached)
+
+Neighbors:
+
+1. `(2,2)` → finish → mark **yellow** (final path), `hops = 4`, last = `(1,2)`  
+2. `(0,2)` → already visited → ignore  
+
+- Finish reached → call `backtrack()`  
+- Path reconstructed:  
+
+
+(0,0) → (0,1) → (0,2) → (1,2) → (2,2)
+
+
+**GUI:** Final path yellow, cyan nodes show explored area.
+
+---
+
+## Step 8: Key Observations
+
+1. **Hops always increasing** → guarantees shortest path.  
+2. **Node updates if shorter path found** → ensures correctness even if visited before.  
+3. **Walls block exploration**, but paths around them are explored.  
+4. **Visualization**:  
+   - Cyan = visited/explored nodes  
+   - Yellow = final shortest path  
+
+> ✅ Dijkstra always finds the shortest path in the grid using hops and backtracking, even if the queue seems random.
+
+---
+
+## Summary
+
+- Start node is added to queue.  
+- Explore neighbors step by step.  
+- Update hops and last visited node.  
+- Backtrack from finish to start to show the final path.  
+- GUI updates after each exploration for visualization.
 
